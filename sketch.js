@@ -1,5 +1,5 @@
 let cells = document.querySelectorAll('.cell');
-let display = document.querySelector('.message');
+let display = document.querySelector('.display');
 //let firstMove = true;
 let board;
 let result;
@@ -37,8 +37,12 @@ function makeMove(cell, indexI, indexJ) {
   if (board[indexI][indexJ] === '') {
     // Call AI move function and game logic here
     board[indexI][indexJ] = human;
-    checkWinner();
     showSymbol(cell);
+    let result = checkWinner();
+    if(result) {
+      displayResult(result);
+      return;
+    }
     currentPlayer = ai;
     bestMove();
   }
@@ -92,7 +96,6 @@ function checkWinner() {
     }
   }
 
-
   if(winner == null && openSpots == 0) {
     return 'Empate';
   } else {
@@ -102,14 +105,17 @@ function checkWinner() {
 
 initializeGame();
 
-result = checkWinner();
-if(result != null) {
+function displayResult(result) {
   if(result == 'Empate') {
     display.textContent = `${result}!`;
   } else {
     display.textContent = `Jogador ${result} é o campeão!`;
   }
-} 
+
+  cells.forEach(cell => {
+    cell.replaceWith(cell.cloneNode(true))
+  });
+}
 
 /*function setup() {
   let canvas = createCanvas(400, 400);

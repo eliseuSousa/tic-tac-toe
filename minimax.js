@@ -18,12 +18,19 @@ function bestMove() {
     }
   }
   
-  board[move.i][move.j] = ai;
-  let indice = move.i * 3 + move.j;
-  let cells = document.querySelectorAll('.cell');
-  let cell = cells[indice];
-  showSymbol(cell);
-  currentPlayer = human;
+  if(move) {
+    board[move.i][move.j] = ai;
+    let indice = move.i * 3 + move.j;
+    let cells = document.querySelectorAll('.cell');
+    let cell = cells[indice];
+    showSymbol(cell);
+    let result = checkWinner();
+    if(result) {
+      displayResult(result);
+      return;
+    }
+    currentPlayer = human;
+  }
 }
 
 let scores = {
