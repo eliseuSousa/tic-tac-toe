@@ -159,8 +159,8 @@ i.fa-xmark {
   background-color: var(--bg-hover);
 }
 
-.cell__winner {
-  background-color: var(--dark-blue);
+.winner__cell {
+  background-color: var(--midnight-blue);
 }
 
 .cell i {
@@ -178,7 +178,7 @@ i.fa-xmark {
   color: var(--gray);
 }
 
-.cell__winner i.fa-circle, .cell__winner i.fa-xmark {
+.winner__cell i.fa-circle, .winner__cell i.fa-xmark {
   color: var(--white);
 }
 

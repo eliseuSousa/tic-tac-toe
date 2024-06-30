@@ -1,4 +1,3 @@
-let cells = document.querySelectorAll('.cell');
 let display = document.querySelector('.display');
 let scoreX = document.getElementById('score__x');
 let scoreO = document.getElementById('score__o');
@@ -88,13 +87,13 @@ function checkWinner() {
   // Horizontal
   for(let i = 0; i < 3; i++) {
     if(equals3(board[i][0], board[i][1], board[i][2])) {
-      winner = board[i][0]
+      winner = board[i][0];
     }
   }
   // Vertical
   for(let i = 0; i < 3; i++) {
     if(equals3(board[0][i], board[1][i], board[2][i])) {
-      winner = board[0][i]
+      winner = board[0][i];
     }
   }
   // Diagonal
@@ -121,27 +120,56 @@ function checkWinner() {
   }
 }
 
-function displayResult(result) {
-  if(result == 'Empate') {
-    display.textContent = `${result}!`;
+function displayResult(winner) {
+  if(winner == 'Empate') {
+    display.textContent = `${winner}!`;
   } else {
-    result === 'X' ? totalScoreX++ : totalScoreO++;
+    drawWinner();
+    winner === 'X' ? totalScoreX++ : totalScoreO++;
     updateScore(scoreX, scoreO);
-    display.textContent = `Jogador ${result} é o campeão!`;
+    display.textContent = `Jogador ${winner} é o campeão!`;
   }
 }
 
+function drawWinner() {
+  const cells = document.querySelectorAll('.cell');
+  let winnerCells = [];
+  // Horizontal
+  for(let i = 0; i < 3; i++) {
+    if(equals3(board[i][0], board[i][1], board[i][2])) {
+      winnerCells = [i * 3, i * 3 + 1, i * 3 + 2];
+    }
+  }
+  // Vertical
+  for(let i = 0; i < 3; i++) {
+    if(equals3(board[0][i], board[1][i], board[2][i])) {
+      winnerCells = [i, 3 + i, 6 + i];
+    }
+  }
+  // Diagonal
+  if(equals3(board[0][0], board[1][1], board[2][2])) {
+    winnerCells = [0, 4, 8];
+  }
+  if(equals3(board[2][0], board[1][1], board[0][2])) {
+    winnerCells = [6, 4, 2];
+  }
+
+  winnerCells.forEach(cell => {
+    cells[cell].classList.add('winner__cell');
+  });
+}
+
 function updateMessage() {
-  let scoreboard__o = document.querySelector('.scoreboard__o');
-  let scoreboard__x = document.querySelector('.scoreboard__x');
+  let scoreboardX = document.querySelector('.scoreboard__x');
+  let scoreboardO = document.querySelector('.scoreboard__o');
   if (currentPlayer === human) {
     currentMessage = 'Sua vez';
-    scoreboard__x.classList.remove('scoreboard__active');
-    scoreboard__o.classList.add('scoreboard__active');
+    scoreboardX.classList.remove('scoreboard__active');
+    scoreboardO.classList.add('scoreboard__active');
   } else {
     currentMessage = 'Vez da IA';
-    scoreboard__o.classList.remove('scoreboard__active');
-    scoreboard__x.classList.add('scoreboard__active');
+    scoreboardO.classList.remove('scoreboard__active');
+    scoreboardX.classList.add('scoreboard__active');
   }
   display.innerHTML = currentMessage;
 }
