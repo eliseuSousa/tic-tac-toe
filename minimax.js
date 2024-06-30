@@ -29,7 +29,8 @@ function bestMove() {
       return;
     }
     currentPlayer = human;
-    updateMessage();
+    currentMessage = 'Sua vez';
+    updateMessage(currentMessage);
   }
 }
 

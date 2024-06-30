@@ -1,7 +1,9 @@
+const divBoard = document.querySelector('.div__board');
 let display = document.querySelector('.display');
 let scoreX = document.getElementById('score__x');
 let scoreO = document.getElementById('score__o');
 let board;
+let cells;
 let result;
 let totalScoreX = 0;
 let totalScoreO = 0;
@@ -12,7 +14,7 @@ let currentPlayer = ai;
 
 function initializeGame() {
   updateScore(scoreX, scoreO);
-  updateMessage()
+  updateMessage(currentMessage);
   board = [
     ['', '', ''],
     ['', '', ''],
@@ -25,7 +27,6 @@ function initializeGame() {
 }
 
 function initializeBoard() {
-  const divBoard = document.querySelector('.div__board');
   divBoard.innerHTML = '';
   for (let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
@@ -35,10 +36,11 @@ function initializeBoard() {
       divBoard.appendChild(cell);
     }
   }
+  cells = document.querySelectorAll('.cell');
 }
 
 function makeMove(cell, indexI, indexJ) {
-  if (board[indexI][indexJ] === '') {
+  if (currentPlayer === human && board[indexI][indexJ] === '') {
     // Call AI move function and game logic here
     board[indexI][indexJ] = human;
     showSymbol(cell);
@@ -48,7 +50,8 @@ function makeMove(cell, indexI, indexJ) {
       return;
     }
     currentPlayer = ai;
-    updateMessage();
+    currentMessage = 'Vez da IA';
+    updateMessage(currentMessage);
     setTimeout(() => {
       bestMove();
     }, 1000);
@@ -129,10 +132,10 @@ function displayResult(winner) {
     updateScore(scoreX, scoreO);
     display.textContent = `Jogador ${winner} é o campeão!`;
   }
+  endMatch();
 }
 
 function drawWinner() {
-  const cells = document.querySelectorAll('.cell');
   let winnerCells = [];
   // Horizontal
   for(let i = 0; i < 3; i++) {
@@ -159,24 +162,34 @@ function drawWinner() {
   });
 }
 
-function updateMessage() {
+function toggleActiveBoard() {
   let scoreboardX = document.querySelector('.scoreboard__x');
   let scoreboardO = document.querySelector('.scoreboard__o');
-  if (currentPlayer === human) {
-    currentMessage = 'Sua vez';
+  if(currentPlayer === human) {
     scoreboardX.classList.remove('scoreboard__active');
     scoreboardO.classList.add('scoreboard__active');
   } else {
-    currentMessage = 'Vez da IA';
     scoreboardO.classList.remove('scoreboard__active');
     scoreboardX.classList.add('scoreboard__active');
   }
-  display.innerHTML = currentMessage;
+}
+
+function updateMessage(message) {
+  toggleActiveBoard();
+  display.innerHTML = message;
 }
 
 function updateScore(scoreX, scoreO) {
   scoreX.innerHTML = totalScoreX;
   scoreO.innerHTML = totalScoreO;
+}
+
+function endMatch() {
+  setTimeout(() => {
+    cells.forEach(cell => {
+      cell.classList.add('cell--none');
+    });
+  }, 1000);
 }
 
 initializeGame();

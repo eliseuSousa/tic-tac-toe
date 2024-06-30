@@ -34,6 +34,19 @@
   }
 }
 
+@keyframes cell-none {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
 body {
   background-color: var(--backgroud);
   width: 100vw;
@@ -154,9 +167,15 @@ i.fa-xmark {
   transition: all .3s;
 }
 
+.cell--none {
+  animation-name: cell-none;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
 .cell:hover {
   cursor: pointer;
-  background-color: var(--bg-hover);
 }
 
 .winner__cell {
@@ -188,8 +207,7 @@ i.fa-xmark {
 }
 
 .error {
-  animation-name: error;
-  
+  animation-name: error; 
 }
 
 .display__error {
