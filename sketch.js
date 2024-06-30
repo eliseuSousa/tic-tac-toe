@@ -13,14 +13,16 @@ let currentPlayer = ai;
 
 function initializeGame() {
   updateScore(scoreX, scoreO);
-  display.innerHTML = currentMessage;
+  updateMessage()
   board = [
     ['', '', ''],
     ['', '', ''],
     ['', '', ''],
   ];
   initializeBoard();
-  bestMove();
+  setTimeout(() => {
+    bestMove();
+  }, 1000);
 }
 
 function initializeBoard() {
@@ -47,16 +49,19 @@ function makeMove(cell, indexI, indexJ) {
       return;
     }
     currentPlayer = ai;
-    bestMove();
+    updateMessage();
+    setTimeout(() => {
+      bestMove();
+    }, 1000);
   } else {
     let message = document.querySelector('.message');
     message.classList.add('error');
-    display.innerHTML = 'Movimento inválido';
+    updateMessage('Movimento inválido');
     display.classList.add('display__error');
     setTimeout(() => {
       message.classList.remove('error');
       display.classList.remove('display__error');
-      display.innerHTML = currentMessage;
+      updateMessage(currentMessage);
     }, 900);
   }
 }
@@ -124,10 +129,11 @@ function displayResult(result) {
     updateScore(scoreX, scoreO);
     display.textContent = `Jogador ${result} é o campeão!`;
   }
+}
 
-  cells.forEach(cell => {
-    cell.replaceWith(cell.cloneNode(true));
-  });
+function updateMessage() {
+  currentMessage = currentPlayer === human ? 'Sua vez' : 'Vez da IA';
+  display.innerHTML = currentMessage;
 }
 
 function updateScore(scoreX, scoreO) {

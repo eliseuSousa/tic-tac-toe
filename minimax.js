@@ -1,6 +1,5 @@
 function bestMove() {
   // A ia está jogando
-  console.log(board);
   let bestScore = -Infinity;
   let move;
   for(let i = 0; i < 3; i++) {
@@ -30,6 +29,7 @@ function bestMove() {
       return;
     }
     currentPlayer = human;
+    updateMessage();
   }
 }
 

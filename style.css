@@ -114,7 +114,7 @@ i.fa-xmark {
   color: var(--gray);
 }
 
-.message{
+.message {
   background-color: var(--white);
   display: flex;
   justify-content: center;
@@ -127,6 +127,7 @@ i.fa-xmark {
   font-size: 2rem;
   font-weight: 600;
   padding: .8rem 0;
+  transition: all .3s;
 }
 
 .div__board {
@@ -185,6 +186,7 @@ i.fa-xmark {
   animation-duration: 1s;
   animation-timing-function: ease-out;
 }
+
 .error {
   animation-name: error;
   
