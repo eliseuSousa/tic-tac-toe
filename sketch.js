@@ -27,6 +27,7 @@ function initializeGame() {
 }
 
 function initializeBoard() {
+  divBoard.classList.remove('div__board--result');
   divBoard.innerHTML = '';
   for (let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
@@ -205,7 +206,7 @@ function shoWResult(winner) {
         <i class="circle"></i>
       </div>
       <p class="result">Empate!</p>
-      <button class="restart">Jogar Novamente</button>
+      <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
     </div>
   `;
   if (winner === 'Empate') {
