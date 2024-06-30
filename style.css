@@ -68,7 +68,7 @@ i.fa-hashtag {
   justify-content: space-between;
 }
 
-.scoreboard__left, .scoreboard__right {
+.scoreboard__o, .scoreboard__x {
   width: 18rem;
   background-color: var(--white);
   padding: .8rem 1.6rem;

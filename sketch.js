@@ -132,7 +132,17 @@ function displayResult(result) {
 }
 
 function updateMessage() {
-  currentMessage = currentPlayer === human ? 'Sua vez' : 'Vez da IA';
+  let scoreboard__o = document.querySelector('.scoreboard__o');
+  let scoreboard__x = document.querySelector('.scoreboard__x');
+  if (currentPlayer === human) {
+    currentMessage = 'Sua vez';
+    scoreboard__x.classList.remove('scoreboard__active');
+    scoreboard__o.classList.add('scoreboard__active');
+  } else {
+    currentMessage = 'Vez da IA';
+    scoreboard__o.classList.remove('scoreboard__active');
+    scoreboard__x.classList.add('scoreboard__active');
+  }
   display.innerHTML = currentMessage;
 }
 
