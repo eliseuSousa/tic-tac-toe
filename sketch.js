@@ -1,16 +1,17 @@
 let cells = document.querySelectorAll('.cell');
 let display = document.querySelector('.display');
-//let firstMove = true;
+let scoreX = document.getElementById('score__x');
+let scoreO = document.getElementById('score__o');
 let board;
 let result;
-
-let w, h;
-
+let totalScoreX = 0;
+let totalScoreO = 0;
 let ai = 'X';
 let human = 'O';
 let currentPlayer = ai;
 
 function initializeGame() {
+  updateScore(scoreX, scoreO);
   board = [
     ['', '', ''],
     ['', '', ''],
@@ -103,76 +104,23 @@ function checkWinner() {
   }
 }
 
-initializeGame();
-
 function displayResult(result) {
   if(result == 'Empate') {
     display.textContent = `${result}!`;
   } else {
+    result === 'X' ? totalScoreX++ : totalScoreO++;
+    updateScore(scoreX, scoreO);
     display.textContent = `Jogador ${result} é o campeão!`;
   }
 
   cells.forEach(cell => {
-    cell.replaceWith(cell.cloneNode(true))
+    cell.replaceWith(cell.cloneNode(true));
   });
 }
 
-/*function setup() {
-  let canvas = createCanvas(400, 400);
-  canvas.parent('container');
-  w = width/3;
-  h = height/3;
-  if(firstMove) {
-    let i = parseInt(Math.random() * 2 + 1);
-    let j = parseInt(Math.random() * 2 + 1);
-    board[i][j] = ai;
-    firstMove = false;
-  } else {
-    bestMove();
-  }
+function updateScore(scoreX, scoreO) {
+  scoreX.innerHTML = totalScoreX;
+  scoreO.innerHTML = totalScoreO;
 }
 
-function mousePressed() {
-  if (currentPlayer == human) {
-    // Human make turn
-    let i = floor(mouseX / w);
-    let j = floor(mouseY / h);
-    // If valid turn
-    if (board[i][j] == '') {
-      
-    }
-  }
-}
-
-function draw() {
-  background(249, 249, 249);
-  textSize(32);
-  strokeWeight(4);
-  stroke('#659ABA');
-
-  line(w, 0, w, height);
-  line(w * 2, 0, w * 2, height);
-  line(0, h, width, h);
-  line(0, h * 2, width, h * 2);
-
-  stroke('#7B7B7B');
-  for (let j = 0; j < 3; j++) {
-    for (let i = 0; i < 3; i++) {
-      let x = w * i + w / 2;
-      let y = h * j + h / 2;
-      let spot = board[i][j];
-      textSize(32);
-      let r = w / 4;
-      if (spot == human) {
-        noFill();
-        ellipse(x, y, r * 2);
-      } else if (spot == ai) {
-        line(x - r, y - r, x + r, y + r);
-        line(x + r, y - r, x - r, y + r);
-      }
-    }
-  }
-
-  
-  
-}*/
+initializeGame();
