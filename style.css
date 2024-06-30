@@ -10,6 +10,21 @@
   }
 }
 
+@keyframes show-circle {
+  0% {
+    width: 2rem;
+    height: 2rem;
+  }
+  50% {
+    width: 4rem;
+    height: 4rem;
+  }
+  100% {
+    width: 5.6rem;
+    height: 5.6rem;
+  }
+}
+
 @keyframes error {
   0% {
     background-color: var(--white);
@@ -102,7 +117,7 @@ i.fa-hashtag {
 
 #score__o, #score__x, .symbol__o, .symbol__x{
   color: var(--greyish-blue);
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-family);
   font-size: 2rem;
   font-weight: 600;
 }
@@ -136,7 +151,7 @@ i.fa-xmark {
 
 .message p {
   color: var(--greyish-blue);
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-family);
   font-size: 2rem;
   font-weight: 600;
   padding: .8rem 0;
@@ -182,18 +197,18 @@ i.fa-xmark {
   background-color: var(--midnight-blue);
 }
 
-.cell i {
+i.fa-circle, i.fa-xmark {
   animation-name: show-symbol;
   animation-duration: 200ms;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
-.cell i.fa-circle {
+i.fa-circle {
   color: var(--blue);
 }
 
-.cell i.fa-xmark {
+i.fa-xmark {
   color: var(--gray);
 }
 
@@ -212,4 +227,58 @@ i.fa-xmark {
 
 .display__error {
   animation-name: error-p;
+}
+
+.div__board--result {
+  display: flex;
+  align-items: center;
+}
+
+.show__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: .8rem;
+}
+
+.symbols {
+  display: flex;
+  align-items: center;
+  column-gap: 1.2rem;
+}
+
+.symbols i.circle {
+  border: .7rem solid var(--blue);
+  border-radius: 50%;
+
+  animation-name: show-circle;
+  animation-duration: 200ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+p.result {
+  text-transform: uppercase;
+  font-family: var(--font-family);
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--backgroud);
+}
+
+.restart {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--white);
+  background-color: var(--gray);
+  padding: .8rem 1.2rem;
+  border-radius: .8rem;
+  border: none;
+  transition: all .3s;
+}
+
+.restart:hover {
+  background-color: var(--bg-hover);
+  color: var(--gray);
+  cursor: pointer;
 }

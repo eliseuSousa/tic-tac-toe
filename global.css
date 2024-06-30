@@ -2,14 +2,15 @@
 
 :root {
   --backgroud: #E6E6E6;
+  --bg-hover: #E0E0E0;
   --blue: #659ABA;
   --white: #F9F9F9;
   --gray: #7B7B7B;
-  --bg-hover: #E0E0E0;
   --error: #CF3F3D;
   --dark-blue: #1f618d;
   --greyish-blue: #5d6d7e;
   --midnight-blue: #1D435F;
+  --font-family: 'Poppins', sans-serif;
 }
 
 * {

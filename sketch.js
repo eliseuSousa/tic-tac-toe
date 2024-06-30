@@ -133,6 +133,9 @@ function displayResult(winner) {
     display.textContent = `Jogador ${winner} é o campeão!`;
   }
   endMatch();
+  setTimeout(() => {
+    shoWResult(winner);
+  }, 3000);
 }
 
 function drawWinner() {
@@ -190,6 +193,24 @@ function endMatch() {
       cell.classList.add('cell--none');
     });
   }, 1000);
+}
+
+function shoWResult(winner) {
+  divBoard.innerHTML = '';
+  divBoard.classList.add('div__board--result');
+  let divShowResult = `
+    <div class="show__result">
+      <div class="symbols">
+        <i class="fa-solid fa-xmark"></i>
+        <i class="circle"></i>
+      </div>
+      <p class="result">Empate!</p>
+      <button class="restart">Jogar Novamente</button>
+    </div>
+  `;
+  if (winner === 'Empate') {
+    divBoard.innerHTML = divShowResult;
+  }
 }
 
 initializeGame();
