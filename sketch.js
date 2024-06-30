@@ -8,10 +8,12 @@ let totalScoreX = 0;
 let totalScoreO = 0;
 let ai = 'X';
 let human = 'O';
+let currentMessage = 'Iniciar ou escolher jogador';
 let currentPlayer = ai;
 
 function initializeGame() {
   updateScore(scoreX, scoreO);
+  display.innerHTML = currentMessage;
   board = [
     ['', '', ''],
     ['', '', ''],
@@ -46,6 +48,16 @@ function makeMove(cell, indexI, indexJ) {
     }
     currentPlayer = ai;
     bestMove();
+  } else {
+    let message = document.querySelector('.message');
+    message.classList.add('error');
+    display.innerHTML = 'Movimento inválido';
+    display.classList.add('display__error');
+    setTimeout(() => {
+      message.classList.remove('error');
+      display.classList.remove('display__error');
+      display.innerHTML = currentMessage;
+    }, 900);
   }
 }
 

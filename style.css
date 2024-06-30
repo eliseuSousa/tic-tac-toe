@@ -10,6 +10,30 @@
   }
 }
 
+@keyframes error {
+  0% {
+    background-color: var(--white);
+  }
+  50% {
+    background-color: var(--error);
+  }
+  100% {
+    background-color: var(--white);
+  }
+}
+
+@keyframes error-p {
+  0% {
+    color: var(--greyish-blue);
+  }
+  50% {
+    color: var(--white);
+  }
+  90% {
+    color: var(--greyish-blue);
+  }
+}
+
 body {
   background-color: var(--backgroud);
   width: 100vw;
@@ -157,14 +181,15 @@ i.fa-xmark {
   color: var(--white);
 }
 
-.error, .error p {
-  transition: all .3s;
+.error, .display__error {
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
 }
-
 .error {
-  background-color: var(--error);
+  animation-name: error;
+  
 }
 
-.error p {
-  color: var(--white);
+.display__error {
+  animation-name: error-p;
 }
