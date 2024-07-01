@@ -22,7 +22,7 @@ function initializeGame() {
   ];
   initializeBoard();
   setTimeout(() => {
-    bestMove();
+    ramdomMove();
   }, 1000);
 }
 
@@ -38,6 +38,18 @@ function initializeBoard() {
     }
   }
   cells = document.querySelectorAll('.cell');
+}
+
+function ramdomMove() {
+  let i = parseInt(Math.random() * 2 + 1);
+  let j = parseInt(Math.random() * 2 + 1);
+  board[i][j] = ai;
+  let indice = i * 3 + j;
+  let cell = cells[indice];
+  showSymbol(cell);
+  currentPlayer = human;
+  currentMessage = 'Sua vez';
+  updateMessage(currentMessage);
 }
 
 function makeMove(cell, indexI, indexJ) {
@@ -72,8 +84,7 @@ function makeMove(cell, indexI, indexJ) {
 function showSymbol(cell) {
   let symbol = document.createElement('i');
   if(currentPlayer === human) {
-    symbol.classList.add('fa-regular');
-    symbol.classList.add('fa-circle');
+    symbol.classList.add('circle');
   } 
   if(currentPlayer === ai) {
     symbol.classList.add('fa-solid');
@@ -125,14 +136,12 @@ function checkWinner() {
 }
 
 function displayResult(winner) {
-  if(winner == 'Empate') {
-    display.textContent = `${winner}!`;
-  } else {
+  if(winner !== 'Empate') {
     drawWinner();
     winner === 'X' ? totalScoreX++ : totalScoreO++;
     updateScore(scoreX, scoreO);
-    display.textContent = `Jogador ${winner} é o campeão!`;
   }
+  display.textContent = 'Fim da partida!';
   endMatch();
   setTimeout(() => {
     shoWResult(winner);
@@ -199,18 +208,37 @@ function endMatch() {
 function shoWResult(winner) {
   divBoard.innerHTML = '';
   divBoard.classList.add('div__board--result');
-  let divShowResult = `
+  if (winner === ai) {
+    divBoard.innerHTML = `
     <div class="show__result">
       <div class="symbols">
         <i class="fa-solid fa-xmark"></i>
-        <i class="circle"></i>
       </div>
-      <p class="result">Empate!</p>
+      <p class="result">Vencedor!</p>
       <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
     </div>
-  `;
-  if (winner === 'Empate') {
-    divBoard.innerHTML = divShowResult;
+    `;
+  } else if (winner === human) {
+    divBoard.innerHTML = `
+    <div class="show__result">
+      <div class="symbols">
+        <i class="circle"></i>
+      </div>
+      <p class="result">Vencedor!</p>
+      <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
+    </div>
+    `;
+  } else {
+    divBoard.innerHTML = `
+      <div class="show__result">
+        <div class="symbols">
+          <i class="fa-solid fa-xmark"></i>
+          <i class="circle"></i>
+        </div>
+        <p class="result">Empate!</p>
+        <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
+      </div>
+    `;
   }
 }
 
