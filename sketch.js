@@ -22,7 +22,7 @@ function initializeGame() {
   ];
   initializeBoard();
   setTimeout(() => {
-    ramdomMove();
+    randomMove();
   }, 1000);
 }
 
@@ -40,7 +40,7 @@ function initializeBoard() {
   cells = document.querySelectorAll('.cell');
 }
 
-function ramdomMove() {
+function randomMove() {
   let i = parseInt(Math.random() * 2 + 1);
   let j = parseInt(Math.random() * 2 + 1);
   board[i][j] = ai;
