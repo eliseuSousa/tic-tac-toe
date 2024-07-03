@@ -61,12 +61,14 @@
 }
 
 body {
-  background-color: var(--backgroud);
   width: 100vw;
   height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background-color: var(--backgroud);
 }
 
 #container {
@@ -94,7 +96,8 @@ i.fa-hashtag {
   justify-content: space-between;
 }
 
-.scoreboard__o, .scoreboard__x {
+.scoreboard__o, 
+.scoreboard__x {
   width: 18rem;
   background-color: var(--white);
   padding: .8rem 1.6rem;
@@ -113,11 +116,14 @@ i.fa-hashtag {
   align-items: center;
 }
 
-#score__o, #score__x, .symbol__o, .symbol__x{
-  color: var(--greyish-blue);
+#score__o, 
+#score__x, 
+.symbol__o, 
+.symbol__x {
   font-family: var(--font-family);
   font-size: 2rem;
   font-weight: 600;
+  color: var(--greyish-blue);
 }
 
 .symbol__o {
@@ -150,41 +156,41 @@ i.circle {
 }
 
 .message {
-  background-color: var(--white);
   display: flex;
   justify-content: center;
   border-radius: 1.2rem;
+  background-color: var(--white);
 }
 
 .message p {
-  color: var(--greyish-blue);
   font-family: var(--font-family);
   font-size: 2rem;
   font-weight: 600;
+  color: var(--greyish-blue);
   padding: .8rem 0;
   transition: all .3s;
 }
 
 .div__board {
-  background-color: var(--dark-blue);
-  border-radius: 1.2rem;
   height: 41rem;
   width: 41rem;
   display: grid;
   grid-template-columns: repeat(3, calc(40rem/3));
   grid-template-rows: repeat(3, calc(40rem/3));
-  gap: .5rem;
   justify-content: center;
+  gap: .5rem;
+  background-color: var(--dark-blue);
+  border-radius: 1.2rem;
   overflow: hidden;
 }
 
 .cell {
   width: calc(40rem/3);
   height: calc(40rem/3);
-  background-color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--white);
   border-radius: .2rem;
   transition: all .3s;
 }
@@ -204,11 +210,12 @@ i.circle {
   background-color: var(--midnight-blue);
 }
 
-.winner__cell i.fa-circle, .winner__cell i.fa-xmark {
+.winner__cell i {
   color: var(--white);
 }
 
-.error, .display__error {
+.error, 
+.display__error {
   animation-duration: 1s;
   animation-timing-function: ease-out;
 }
@@ -240,17 +247,17 @@ i.circle {
 }
 
 p.result {
-  text-transform: uppercase;
-  font-family: var(--font-family);
   font-size: 3rem;
   font-weight: 600;
   color: var(--backgroud);
+  text-transform: uppercase;
+  font-family: var(--font-family);
 }
 
 .restart {
   font-family: var(--font-family);
-  font-weight: 600;
   font-size: 1.6rem;
+  font-weight: 600;
   color: var(--white);
   background-color: var(--gray);
   padding: .8rem 1.2rem;

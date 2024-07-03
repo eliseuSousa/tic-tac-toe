@@ -1,4 +1,4 @@
-const divBoard = document.querySelector('.div__board');
+let divBoard = document.querySelector('.div__board');
 let display = document.querySelector('.display');
 let scoreX = document.getElementById('score__x');
 let scoreO = document.getElementById('score__o');
@@ -7,8 +7,8 @@ let cells;
 let result;
 let totalScoreX = 0;
 let totalScoreO = 0;
-let ai = 'X';
-let human = 'O';
+const ai = 'X';
+const human = 'O';
 let currentMessage = 'Iniciar ou escolher jogador';
 let currentPlayer = ai;
 
@@ -22,7 +22,7 @@ function initializeGame() {
   ];
   initializeBoard();
   setTimeout(() => {
-    randomMove();
+    bestMove();
   }, 1000);
 }
 
@@ -40,21 +40,8 @@ function initializeBoard() {
   cells = document.querySelectorAll('.cell');
 }
 
-function randomMove() {
-  let i = parseInt(Math.random() * 2 + 1);
-  let j = parseInt(Math.random() * 2 + 1);
-  board[i][j] = ai;
-  let indice = i * 3 + j;
-  let cell = cells[indice];
-  showSymbol(cell);
-  currentPlayer = human;
-  currentMessage = 'Sua vez';
-  updateMessage(currentMessage);
-}
-
 function makeMove(cell, indexI, indexJ) {
   if (currentPlayer === human && board[indexI][indexJ] === '') {
-    // Call AI move function and game logic here
     board[indexI][indexJ] = human;
     showSymbol(cell);
     let result = checkWinner();
@@ -122,13 +109,13 @@ function checkWinner() {
   let openSpots = 0;
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-      if (board[i][j] == '') {
+      if (board[i][j] === '') {
         openSpots++;
       }
     }
   }
 
-  if(winner == null && openSpots == 0) {
+  if(winner === null && openSpots === 0) {
     return 'Empate';
   } else {
     return winner;
@@ -240,6 +227,17 @@ function shoWResult(winner) {
       </div>
     `;
   }
+}
+
+function randomMove() {
+  let i = parseInt(Math.random() * 2 + 1);
+  let j = parseInt(Math.random() * 2 + 1);
+  board[i][j] = ai;
+  let cell = cells[i * 3 + j];
+  showSymbol(cell);
+  currentPlayer = human;
+  currentMessage = 'Sua vez';
+  updateMessage(currentMessage);
 }
 
 initializeGame();

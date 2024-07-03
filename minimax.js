@@ -1,11 +1,16 @@
+let scores = {
+  'X': 1,
+  'O': -1,
+  'Empate': 0
+};
+
 function bestMove() {
-  // A ia está jogando
   let bestScore = -Infinity;
-  let move;
+  let move = null;
+
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
-      // A vaga eh disponivel
-      if(board[i][j] == '') {
+      if(board[i][j] === '') {
         board[i][j] = ai;
         let score = minimax(board, 0, false);
         board[i][j] = '';
@@ -17,34 +22,29 @@ function bestMove() {
     }
   }
   
-  if(move) {
-    board[move.i][move.j] = ai;
-    let indice = move.i * 3 + move.j;
-    let cells = document.querySelectorAll('.cell');
-    let cell = cells[indice];
-    showSymbol(cell);
-    let result = checkWinner();
-    if(result) {
-      displayResult(result);
-      return;
-    }
-    currentPlayer = human;
-    currentMessage = 'Sua vez';
-    updateMessage(currentMessage);
-  }
+  if(move) makeBestMove(move);
 }
 
-let scores = {
-  'X': 1,
-  'O': -1,
-  'Empate': 0
-};
+function makeBestMove(move) {
+  board[move.i][move.j] = ai;
+  let cells = document.querySelectorAll('.cell');
+  let cell = cells[move.i * 3 + move.j];
+  showSymbol(cell);
+  let result = checkWinner();
+  if(result) {
+    displayResult(result);
+    return;
+  }
+  currentPlayer = human;
+  currentMessage = 'Sua vez';
+  updateMessage(currentMessage);
+}
+
 
 function maximizingPlayer(board, depth) {
   let bestScore = -Infinity;
   for(let i = 0; i < 3; i++) {
-    for(let j = 0; j < 3; j++) {
-      // A vaga esta disponivel 
+    for(let j = 0; j < 3; j++) { 
       if(board[i][j] === '') {
         board[i][j] = ai;
         let score = minimax(board, depth + 1, false);
@@ -60,7 +60,6 @@ function minimizingPlayer(board, depth) {
   let bestScore = Infinity;
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
-      // A vaga esta disponivel 
       if(board[i][j] == '') {
         board[i][j] = human;
         let score = minimax(board, depth + 1, true);
