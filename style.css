@@ -271,3 +271,32 @@ p.result {
   color: var(--gray);
   cursor: pointer;
 }
+
+@media (max-width: 576px) {
+
+  .top__menu {
+    max-width: 32rem;
+  }
+
+  .scoreboard { 
+    max-width: 100%;
+  }
+
+  .scoreboard__o, .scoreboard__x {
+    max-width: 40%;
+  }
+
+  .div__board {
+    max-width: 32rem;
+    max-height: 32.2rem;
+    grid-template-columns: repeat(3, calc(32rem / 3));
+    grid-template-rows: repeat(3, calc(32rem / 3));
+    gap: .3rem;
+    overflow: visible;
+  }
+
+  .cell {
+    max-width: calc(31rem/3);
+    max-height: calc(31rem/3);
+  }
+}
