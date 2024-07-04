@@ -7,12 +7,13 @@ let scores = {
 function bestMove() {
   let bestScore = -Infinity;
   let move = null;
+  let score;
 
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
       if(board[i][j] === '') {
         board[i][j] = ai;
-        let score = minimax(board, 0, false);
+        score = minimax(board, 0, false);
         board[i][j] = '';
         if(score > bestScore) {
           bestScore = score;
@@ -40,14 +41,14 @@ function makeBestMove(move) {
   updateMessage(currentMessage);
 }
 
-
 function maximizingPlayer(board, depth) {
   let bestScore = -Infinity;
+  let score;
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) { 
       if(board[i][j] === '') {
         board[i][j] = ai;
-        let score = minimax(board, depth + 1, false);
+        score = minimax(board, depth + 1, false);
         board[i][j] = '';
         bestScore = Math.max(score, bestScore);
       }
