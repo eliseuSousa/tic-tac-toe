@@ -2,15 +2,19 @@ const divBoard = document.querySelector('.div__board');
 const display = document.querySelector('.display');
 const scoreX = document.getElementById('score__x');
 const scoreO = document.getElementById('score__o');
-let board = null;
-let cells = [];
-let result = null;
-let totalScoreX = 0;
-let totalScoreO = 0;
+
 const ai = 'X';
 const human = 'O';
-let currentMessage = null;
-let currentPlayer = ai;
+
+let gameState = {
+  board: null,
+  cells: [],
+  result: null,
+  totalScoreX: 0,
+  totalScoreO: 0,
+  currentMessage: null,
+  currentPlayer: ai
+}
 
 function initializeGame() {
   initializeScores();
@@ -19,13 +23,13 @@ function initializeGame() {
 }
 
 function initializeScores() {
-  currentMessage = 'Iniciar ou escolher jogador';
+  gameState.currentMessage = 'Iniciar ou escolher jogador';
   updateScore(scoreX, scoreO);
-  updateMessage(currentMessage);
+  updateMessage(gameState.currentMessage);
 }
 
 function initializeBoard() {
-  board = [
+  gameState.board = [
     ['', '', ''],
     ['', '', ''],
     ['', '', ''],
@@ -40,41 +44,45 @@ function initializeBoard() {
       divBoard.appendChild(cell);
     }
   }
-  cells = document.querySelectorAll('.cell');
+  gameState.cells = document.querySelectorAll('.cell');
 }
 
 function makeMove(cell, indexI, indexJ) {
-  if (currentPlayer === human && board[indexI][indexJ] === '') {
-    board[indexI][indexJ] = human;
+  if (gameState.currentPlayer === human && gameState.board[indexI][indexJ] === '') {
+    gameState.board[indexI][indexJ] = human;
     showSymbol(cell);
     let result = checkWinner();
     if(result) {
       displayResult(result);
       return;
     }
-    currentPlayer = ai;
-    currentMessage = 'Vez da IA';
-    updateMessage(currentMessage);
+    gameState.currentPlayer = ai;
+    gameState.currentMessage = 'Vez da IA';
+    updateMessage(gameState.currentMessage);
     setTimeout(() => { bestMove() }, 1000);
   } else {
-    let message = document.querySelector('.message');
-    message.classList.add('error');
-    updateMessage('Movimento inválido');
-    display.classList.add('display__error');
-    setTimeout(() => {
-      message.classList.remove('error');
-      display.classList.remove('display__error');
-      updateMessage(currentMessage);
-    }, 900);
+    displayInvalidMove();
   }
+}
+
+function displayInvalidMove() {
+  let message = document.querySelector('.message');
+  message.classList.add('error');
+  updateMessage('Movimento inválido');
+  display.classList.add('display__error');
+  setTimeout(() => {
+    message.classList.remove('error');
+    display.classList.remove('display__error');
+    updateMessage(gameState.currentMessage);
+  }, 900);
 }
 
 function showSymbol(cell) {
   let symbol = document.createElement('i');
-  if(currentPlayer === human) {
+  if(gameState.currentPlayer === human) {
     symbol.classList.add('circle');
   } 
-  if(currentPlayer === ai) {
+  if(gameState.currentPlayer === ai) {
     symbol.classList.add('fa-solid');
     symbol.classList.add('fa-xmark');
   }
@@ -104,15 +112,15 @@ function checkWinner() {
   
   winConditions.forEach(condition => {
     const [a, b, c] = condition;
-    if (equals3(board[a[0]][a[1]], board[b[0]][b[1]], board[c[0]][c[1]])) {
-     winner = board[a[0]][a[1]];
+    if (equals3(gameState.board[a[0]][a[1]], gameState.board[b[0]][b[1]], gameState.board[c[0]][c[1]])) {
+     winner = gameState.board[a[0]][a[1]];
     }
   });
 
   let openSpots = 0;
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-      if (board[i][j] === '') {
+      if (gameState.board[i][j] === '') {
         openSpots++;
       }
     }
@@ -128,7 +136,7 @@ function checkWinner() {
 function displayResult(winner) {
   if(winner !== 'Empate') {
     drawWinner();
-    winner === 'X' ? totalScoreX++ : totalScoreO++;
+    winner === 'X' ? gameState.totalScoreX++ : gameState.totalScoreO++;
     updateScore(scoreX, scoreO);
   }
   display.textContent = 'Fim da partida!';
@@ -142,33 +150,33 @@ function drawWinner() {
   let winnerCells = [];
   // Horizontal
   for(let i = 0; i < 3; i++) {
-    if(equals3(board[i][0], board[i][1], board[i][2])) {
+    if(equals3(gameState.board[i][0], gameState.board[i][1], gameState.board[i][2])) {
       winnerCells = [i * 3, i * 3 + 1, i * 3 + 2];
     }
   }
   // Vertical
   for(let i = 0; i < 3; i++) {
-    if(equals3(board[0][i], board[1][i], board[2][i])) {
+    if(equals3(gameState.board[0][i], gameState.board[1][i], gameState.board[2][i])) {
       winnerCells = [i, 3 + i, 6 + i];
     }
   }
   // Diagonal
-  if(equals3(board[0][0], board[1][1], board[2][2])) {
+  if(equals3(gameState.board[0][0], gameState.board[1][1], gameState.board[2][2])) {
     winnerCells = [0, 4, 8];
   }
-  if(equals3(board[2][0], board[1][1], board[0][2])) {
+  if(equals3(gameState.board[2][0], gameState.board[1][1], gameState.board[0][2])) {
     winnerCells = [6, 4, 2];
   }
 
   winnerCells.forEach(cell => {
-    cells[cell].classList.add('winner__cell');
+    gameState.cells[cell].classList.add('winner__cell');
   });
 }
 
 function toggleActiveBoard() {
   let scoreboardX = document.querySelector('.scoreboard__x');
   let scoreboardO = document.querySelector('.scoreboard__o');
-  if(currentPlayer === human) {
+  if(gameState.currentPlayer === human) {
     scoreboardX.classList.remove('scoreboard__active');
     scoreboardO.classList.add('scoreboard__active');
   } else {
@@ -183,13 +191,13 @@ function updateMessage(message) {
 }
 
 function updateScore(scoreX, scoreO) {
-  scoreX.innerHTML = totalScoreX;
-  scoreO.innerHTML = totalScoreO;
+  scoreX.innerHTML = gameState.totalScoreX;
+  scoreO.innerHTML = gameState.totalScoreO;
 }
 
 function endMatch() {
   setTimeout(() => {
-    cells.forEach(cell => {
+    gameState.cells.forEach(cell => {
       cell.classList.add('cell--none');
     });
   }, 1000);
@@ -234,17 +242,6 @@ function showResult(winner) {
 
   divBoard.innerHTML = resultHTML;
   document.querySelector('.restart').addEventListener('click', initializeGame);
-}
-
-function randomMove() {
-  let i = parseInt(Math.random() * 2 + 1);
-  let j = parseInt(Math.random() * 2 + 1);
-  board[i][j] = ai;
-  let cell = cells[i * 3 + j];
-  showSymbol(cell);
-  currentPlayer = human;
-  currentMessage = 'Sua vez';
-  updateMessage(currentMessage);
 }
 
 initializeGame();

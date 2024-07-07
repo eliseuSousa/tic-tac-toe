@@ -11,10 +11,10 @@ function bestMove() {
 
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
-      if(board[i][j] === '') {
-        board[i][j] = ai;
-        score = minimax(board, 0, -Infinity, Infinity, false);
-        board[i][j] = '';
+      if(gameState.board[i][j] === '') {
+        gameState.board[i][j] = ai;
+        score = minimax(gameState.board, 0, -Infinity, Infinity, false);
+        gameState.board[i][j] = '';
         if(score > bestScore) {
           bestScore = score;
           move = {i, j};
@@ -26,7 +26,7 @@ function bestMove() {
 }
 
 function makeBestMove(move) {
-  board[move.i][move.j] = ai;
+  gameState.board[move.i][move.j] = ai;
   let cells = document.querySelectorAll('.cell');
   let cell = cells[move.i * 3 + move.j];
   showSymbol(cell);
@@ -35,9 +35,9 @@ function makeBestMove(move) {
     displayResult(result);
     return;
   }
-  currentPlayer = human;
-  currentMessage = 'Sua vez';
-  updateMessage(currentMessage);
+  gameState.currentPlayer = human;
+  gameState.currentMessage = 'Sua vez';
+  updateMessage(gameState.currentMessage);
 }
 
 function maximizingPlayer(board, depth, alpha, beta) {
