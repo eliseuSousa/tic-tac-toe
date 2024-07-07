@@ -1,9 +1,3 @@
-let scores = {
-  'X': 1,
-  'O': -1,
-  'Empate': 0
-};
-
 function bestMove() {
   let bestScore = -Infinity;
   let move = null;
@@ -36,7 +30,7 @@ function makeBestMove(move) {
     return;
   }
   gameState.currentPlayer = human;
-  gameState.currentMessage = gameState.messages[2];
+  gameState.currentMessage = MESSAGES.HUMAN_TURN;
   updateMessage(gameState.currentMessage);
 }
 

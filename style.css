@@ -103,6 +103,7 @@ i.fa-hashtag {
   padding: .8rem 1.6rem;
   border-radius: 1.2rem;
   border-bottom: transparent solid .4rem;
+  cursor: pointer;
   transition: all .3s;
 }
 

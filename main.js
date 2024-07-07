@@ -1,38 +1,62 @@
 const divBoard = document.querySelector('.div__board');
 const display = document.querySelector('.display');
+const scoreBoardO = document.querySelector('.scoreboard__o');
 const scoreX = document.getElementById('score__x');
 const scoreO = document.getElementById('score__o');
 
-const ai = 'X';
-const human = 'O';
+const gameSymbols = ['X', 'O'];
+const MESSAGES = {
+  START: 'Iniciar ou escolher jogador',
+  AI_TURN: 'Vez da IA',
+  HUMAN_TURN: 'Sua vez',
+  GAME_OVER: 'Fim da partida!',
+  INVALID_MOVE: 'Movimento inválido'
+}
+
+let ai = '';
+let human = '';
+let scores = {
+  'X': -1,
+  'O': 1,
+  'Empate': 0
+};
 
 let gameState = {
   board: null,
   cells: [],
-  result: null,
+  result: '',
   totalScoreX: 0,
   totalScoreO: 0,
-  messages: [
-    'Iniciar ou escolher jogador',
-    'Vez da IA',
-    'Sua vez',
-    'Fim da partida!',
-    'Movimento inválido'
-  ],
-  currentMessage: null,
-  currentPlayer: ai
+  currentMessage: '',
+  currentPlayer: '',
 }
 
 function initializeGame() {
+  ai = gameSymbols[1];
+  human = gameSymbols[0];
+  gameState.currentPlayer = human;
   initializeScores();
   initializeBoard();
-  setTimeout(() => { bestMove() }, 1000);
+}
+
+function choisePlayer() {
+  if(human === gameSymbols[0]) {
+    human = gameSymbols[1];
+    ai = gameSymbols[0];
+    scores.O = -1;
+    scores.X = 1;
+    gameState.currentPlayer = ai;
+    gameState.currentMessage = MESSAGES.AI_TURN;
+    updateMessage(gameState.currentMessage);
+    setTimeout(() => { bestMove() }, 1000);
+  } 
 }
 
 function initializeScores() {
-  gameState.currentMessage = gameState.messages[0];
-  updateScore(scoreX, scoreO);
+  gameState.currentMessage = MESSAGES.START;
   updateMessage(gameState.currentMessage);
+  updateScore(scoreX, scoreO);
+  scoreBoardO.addEventListener('click', choisePlayer);
 }
 
 function initializeBoard() {
@@ -64,7 +88,7 @@ function makeMove(cell, indexI, indexJ) {
       return;
     }
     gameState.currentPlayer = ai;
-    gameState.currentMessage = gameState.messages[1];
+    gameState.currentMessage = MESSAGES.AI_TURN;
     updateMessage(gameState.currentMessage);
     setTimeout(() => { bestMove() }, 1000);
   } else {
@@ -75,7 +99,7 @@ function makeMove(cell, indexI, indexJ) {
 function displayInvalidMove() {
   let message = document.querySelector('.message');
   message.classList.add('error');
-  updateMessage(gameState.messages[4]);
+  updateMessage(MESSAGES.INVALID_MOVE);
   display.classList.add('display__error');
   setTimeout(() => {
     message.classList.remove('error');
@@ -86,12 +110,12 @@ function displayInvalidMove() {
 
 function showSymbol(cell) {
   let symbol = document.createElement('i');
-  if(gameState.currentPlayer === human) {
-    symbol.classList.add('circle');
-  } 
-  if(gameState.currentPlayer === ai) {
+  if(gameState.currentPlayer === gameSymbols[0]) {
     symbol.classList.add('fa-solid');
     symbol.classList.add('fa-xmark');
+  } 
+  if(gameState.currentPlayer === gameSymbols[1]) {
+    symbol.classList.add('circle');
   }
   cell.appendChild(symbol);
 }
@@ -147,14 +171,12 @@ function checkWinner() {
 function displayResult(winner) {
   if(winner !== 'Empate') {
     drawWinner();
-    winner === 'X' ? gameState.totalScoreX++ : gameState.totalScoreO++;
+    winner === gameSymbols[0] ? gameState.totalScoreX++ : gameState.totalScoreO++;
     updateScore(scoreX, scoreO);
   }
-  display.textContent = gameState.messages[3];
+  display.textContent = MESSAGES.GAME_OVER;
   endMatch();
-  setTimeout(() => {
-    showResult(winner);
-  }, 3000);
+  setTimeout(() => { showResult(winner) }, 3000);
 }
 
 function drawWinner() {
@@ -187,12 +209,12 @@ function drawWinner() {
 function toggleActiveBoard() {
   let scoreboardX = document.querySelector('.scoreboard__x');
   let scoreboardO = document.querySelector('.scoreboard__o');
-  if(gameState.currentPlayer === human) {
-    scoreboardX.classList.remove('scoreboard__active');
-    scoreboardO.classList.add('scoreboard__active');
-  } else {
-    scoreboardO.classList.remove('scoreboard__active');
+  if(human === gameState.currentPlayer) {
     scoreboardX.classList.add('scoreboard__active');
+    scoreboardO.classList.remove('scoreboard__active');
+  } else {
+    scoreboardO.classList.add('scoreboard__active');
+    scoreboardX.classList.remove('scoreboard__active');
   }
 }
 
@@ -218,7 +240,7 @@ function showResult(winner) {
   let resultHTML = '';
   divBoard.innerHTML = '';
   divBoard.classList.add('div__board--result');
-  if (winner === ai) {
+  if (winner === gameSymbols[0]) {
     resultHTML = `
     <div class="show__result">
       <div class="symbols">
@@ -228,7 +250,7 @@ function showResult(winner) {
       <button class="restart">Jogar Novamente</button>
     </div>
     `;
-  } else if (winner === human) {
+  } else if (winner === gameSymbols[1]) {
     resultHTML = `
     <div class="show__result">
       <div class="symbols">
