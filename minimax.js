@@ -4,7 +4,10 @@ let scores = {
   'Empate': 0
 };
 
+let count;
+
 function bestMove() {
+  count = 0;
   let bestScore = -Infinity;
   let move = null;
   let score;
@@ -13,7 +16,7 @@ function bestMove() {
     for(let j = 0; j < 3; j++) {
       if(board[i][j] === '') {
         board[i][j] = ai;
-        score = minimax(board, 0, false);
+        score = minimax(board, 0, -Infinity, Infinity, false);
         board[i][j] = '';
         if(score > bestScore) {
           bestScore = score;
@@ -22,7 +25,7 @@ function bestMove() {
       }
     }
   }
-  
+   console.log(count);
   if(move) makeBestMove(move);
 }
 
@@ -41,45 +44,50 @@ function makeBestMove(move) {
   updateMessage(currentMessage);
 }
 
-function maximizingPlayer(board, depth) {
+function maximizingPlayer(board, depth, alpha, beta) {
   let bestScore = -Infinity;
   let score;
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) { 
       if(board[i][j] === '') {
         board[i][j] = ai;
-        score = minimax(board, depth + 1, false);
+        score = minimax(board, depth + 1, alpha, beta, false);
         board[i][j] = '';
         bestScore = Math.max(score, bestScore);
+        alpha = Math.max(alpha, bestScore);
+        if(beta <= alpha) break;
       }
     }
   }
   return bestScore;
 }
 
-function minimizingPlayer(board, depth) {
+function minimizingPlayer(board, depth, alpha, beta) {
   let bestScore = Infinity;
   for(let i = 0; i < 3; i++) {
     for(let j = 0; j < 3; j++) {
       if(board[i][j] == '') {
         board[i][j] = human;
-        let score = minimax(board, depth + 1, true);
+        let score = minimax(board, depth + 1, alpha, beta, true);
         board[i][j] = '';
         bestScore = Math.min(score, bestScore);
+        beta = Math.min(beta, bestScore);
+        if(beta <= alpha) break;
       }
     }
   }
   return bestScore;
 }
 
-function minimax(board, depth, isMaximizing) {
+function minimax(board, depth, alpha, beta, isMaximizing) {
+  count++;
   let result = checkWinner();
   if (result !== null) {
     return scores[result];
   }
   if(isMaximizing) {
-    return maximizingPlayer(board, depth);
+    return maximizingPlayer(board, depth, alpha, beta);
   } else {
-    return minimizingPlayer(board, depth);
+    return minimizingPlayer(board, depth, alpha, beta);
   }
 }
