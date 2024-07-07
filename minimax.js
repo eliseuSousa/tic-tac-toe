@@ -36,7 +36,7 @@ function makeBestMove(move) {
     return;
   }
   gameState.currentPlayer = human;
-  gameState.currentMessage = 'Sua vez';
+  gameState.currentMessage = gameState.messages[2];
   updateMessage(gameState.currentMessage);
 }
 

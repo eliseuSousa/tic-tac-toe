@@ -12,6 +12,13 @@ let gameState = {
   result: null,
   totalScoreX: 0,
   totalScoreO: 0,
+  messages: [
+    'Iniciar ou escolher jogador',
+    'Vez da IA',
+    'Sua vez',
+    'Fim da partida!',
+    'Movimento inválido'
+  ],
   currentMessage: null,
   currentPlayer: ai
 }
@@ -23,7 +30,7 @@ function initializeGame() {
 }
 
 function initializeScores() {
-  gameState.currentMessage = 'Iniciar ou escolher jogador';
+  gameState.currentMessage = gameState.messages[0];
   updateScore(scoreX, scoreO);
   updateMessage(gameState.currentMessage);
 }
@@ -57,7 +64,7 @@ function makeMove(cell, indexI, indexJ) {
       return;
     }
     gameState.currentPlayer = ai;
-    gameState.currentMessage = 'Vez da IA';
+    gameState.currentMessage = gameState.messages[1];
     updateMessage(gameState.currentMessage);
     setTimeout(() => { bestMove() }, 1000);
   } else {
@@ -68,7 +75,7 @@ function makeMove(cell, indexI, indexJ) {
 function displayInvalidMove() {
   let message = document.querySelector('.message');
   message.classList.add('error');
-  updateMessage('Movimento inválido');
+  updateMessage(gameState.messages[4]);
   display.classList.add('display__error');
   setTimeout(() => {
     message.classList.remove('error');
@@ -143,7 +150,7 @@ function displayResult(winner) {
     winner === 'X' ? gameState.totalScoreX++ : gameState.totalScoreO++;
     updateScore(scoreX, scoreO);
   }
-  display.textContent = 'Fim da partida!';
+  display.textContent = gameState.messages[3];
   endMatch();
   setTimeout(() => {
     showResult(winner);
