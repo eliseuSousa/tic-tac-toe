@@ -4,10 +4,7 @@ let scores = {
   'Empate': 0
 };
 
-let count;
-
 function bestMove() {
-  count = 0;
   let bestScore = -Infinity;
   let move = null;
   let score;
@@ -25,7 +22,6 @@ function bestMove() {
       }
     }
   }
-   console.log(count);
   if(move) makeBestMove(move);
 }
 
@@ -80,7 +76,6 @@ function minimizingPlayer(board, depth, alpha, beta) {
 }
 
 function minimax(board, depth, alpha, beta, isMaximizing) {
-  count++;
   let result = checkWinner();
   if (result !== null) {
     return scores[result];

@@ -1,32 +1,35 @@
-let divBoard = document.querySelector('.div__board');
-let display = document.querySelector('.display');
-let scoreX = document.getElementById('score__x');
-let scoreO = document.getElementById('score__o');
-let board;
-let cells;
-let result;
+const divBoard = document.querySelector('.div__board');
+const display = document.querySelector('.display');
+const scoreX = document.getElementById('score__x');
+const scoreO = document.getElementById('score__o');
+let board = null;
+let cells = [];
+let result = null;
 let totalScoreX = 0;
 let totalScoreO = 0;
 const ai = 'X';
 const human = 'O';
-let currentMessage = 'Iniciar ou escolher jogador';
+let currentMessage = null;
 let currentPlayer = ai;
 
 function initializeGame() {
+  initializeScores();
+  initializeBoard();
+  setTimeout(() => { bestMove() }, 1000);
+}
+
+function initializeScores() {
+  currentMessage = 'Iniciar ou escolher jogador';
   updateScore(scoreX, scoreO);
   updateMessage(currentMessage);
+}
+
+function initializeBoard() {
   board = [
     ['', '', ''],
     ['', '', ''],
     ['', '', ''],
   ];
-  initializeBoard();
-  setTimeout(() => {
-    bestMove();
-  }, 1000);
-}
-
-function initializeBoard() {
   divBoard.classList.remove('div__board--result');
   divBoard.innerHTML = '';
   for (let i = 0; i < 3; i++) {
@@ -52,9 +55,7 @@ function makeMove(cell, indexI, indexJ) {
     currentPlayer = ai;
     currentMessage = 'Vez da IA';
     updateMessage(currentMessage);
-    setTimeout(() => {
-      bestMove();
-    }, 1000);
+    setTimeout(() => { bestMove() }, 1000);
   } else {
     let message = document.querySelector('.message');
     message.classList.add('error');
@@ -85,26 +86,28 @@ function equals3(a, b, c) {
 }
 
 function checkWinner() {
+  const winConditions = [
+    // Horizontal
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+    // Vertical
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+    // Diagonal
+    [[0, 0], [1, 1], [2, 2]],
+    [[2, 0], [1, 1], [0, 2]]
+  ];
+
   let winner = null;
-  // Horizontal
-  for(let i = 0; i < 3; i++) {
-    if(equals3(board[i][0], board[i][1], board[i][2])) {
-      winner = board[i][0];
+  
+  winConditions.forEach(condition => {
+    const [a, b, c] = condition;
+    if (equals3(board[a[0]][a[1]], board[b[0]][b[1]], board[c[0]][c[1]])) {
+     winner = board[a[0]][a[1]];
     }
-  }
-  // Vertical
-  for(let i = 0; i < 3; i++) {
-    if(equals3(board[0][i], board[1][i], board[2][i])) {
-      winner = board[0][i];
-    }
-  }
-  // Diagonal
-  if(equals3(board[0][0], board[1][1], board[2][2])) {
-    winner = board[0][0];
-  }
-  if(equals3(board[2][0], board[1][1], board[0][2])) {
-    winner = board[2][0];
-  }
+  });
 
   let openSpots = 0;
   for (let i = 0; i < 3; i++) {
@@ -131,7 +134,7 @@ function displayResult(winner) {
   display.textContent = 'Fim da partida!';
   endMatch();
   setTimeout(() => {
-    shoWResult(winner);
+    showResult(winner);
   }, 3000);
 }
 
@@ -192,41 +195,45 @@ function endMatch() {
   }, 1000);
 }
 
-function shoWResult(winner) {
+function showResult(winner) {
+  let resultHTML = '';
   divBoard.innerHTML = '';
   divBoard.classList.add('div__board--result');
   if (winner === ai) {
-    divBoard.innerHTML = `
+    resultHTML = `
     <div class="show__result">
       <div class="symbols">
         <i class="fa-solid fa-xmark"></i>
       </div>
       <p class="result">Vencedor!</p>
-      <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
+      <button class="restart">Jogar Novamente</button>
     </div>
     `;
   } else if (winner === human) {
-    divBoard.innerHTML = `
+    resultHTML = `
     <div class="show__result">
       <div class="symbols">
         <i class="circle"></i>
       </div>
       <p class="result">Vencedor!</p>
-      <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
+      <button class="restart">Jogar Novamente</button>
     </div>
     `;
   } else {
-    divBoard.innerHTML = `
+    resultHTML = `
       <div class="show__result">
         <div class="symbols">
           <i class="fa-solid fa-xmark"></i>
           <i class="circle"></i>
         </div>
         <p class="result">Empate!</p>
-        <button class="restart" onclick="initializeGame()">Jogar Novamente</button>
+        <button class="restart">Jogar Novamente</button>
       </div>
     `;
   }
+
+  divBoard.innerHTML = resultHTML;
+  document.querySelector('.restart').addEventListener('click', initializeGame);
 }
 
 function randomMove() {
