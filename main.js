@@ -93,6 +93,18 @@ function equals3(a, b, c) {
   return (a == b && b == c && a != '');
 }
 
+function checkOpenSpots() {
+  let openSpots = 0;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (gameState.board[i][j] === '') {
+        openSpots++;
+      }
+    }
+  }
+  return openSpots;
+}
+
 function checkWinner() {
   const winConditions = [
     // Horizontal
@@ -109,22 +121,14 @@ function checkWinner() {
   ];
 
   let winner = null;
-  
+  let openSpots = checkOpenSpots();
+
   winConditions.forEach(condition => {
     const [a, b, c] = condition;
     if (equals3(gameState.board[a[0]][a[1]], gameState.board[b[0]][b[1]], gameState.board[c[0]][c[1]])) {
      winner = gameState.board[a[0]][a[1]];
     }
   });
-
-  let openSpots = 0;
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (gameState.board[i][j] === '') {
-        openSpots++;
-      }
-    }
-  }
 
   if(winner === null && openSpots === 0) {
     return 'Empate';
