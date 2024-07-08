@@ -15,12 +15,7 @@ const MESSAGES = {
 
 let ai = '';
 let human = '';
-let scores = {
-  'X': -1,
-  'O': 1,
-  'Empate': 0
-};
-
+let scores = null;
 let gameState = {
   board: null,
   cells: [],
@@ -53,6 +48,11 @@ function choisePlayer() {
 }
 
 function initializeScores() {
+  scores = {
+    'X': -1,
+    'O': 1,
+    'Empate': 0
+  };
   gameState.currentMessage = MESSAGES.START;
   updateMessage(gameState.currentMessage);
   updateScore(scoreX, scoreO);
