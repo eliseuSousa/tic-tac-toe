@@ -209,12 +209,18 @@ function drawWinner() {
 function toggleActiveBoard() {
   let scoreboardX = document.querySelector('.scoreboard__x');
   let scoreboardO = document.querySelector('.scoreboard__o');
-  if(human === gameState.currentPlayer) {
+  if(human === gameState.currentPlayer && human === gameSymbols[0]) {
     scoreboardX.classList.add('scoreboard__active');
     scoreboardO.classList.remove('scoreboard__active');
-  } else {
+  } else if (ai === gameState.currentPlayer && ai === gameSymbols[1]) {
     scoreboardO.classList.add('scoreboard__active');
     scoreboardX.classList.remove('scoreboard__active');
+  } else if (human === gameState.currentPlayer && human === gameSymbols[1]) {
+    scoreboardO.classList.add('scoreboard__active');
+    scoreboardX.classList.remove('scoreboard__active');
+  } else {
+    scoreboardX.classList.add('scoreboard__active');
+    scoreboardO.classList.remove('scoreboard__active');
   }
 }
 
